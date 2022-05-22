@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "471447579009",
+    "project_id": "hazy-flutter-fire-demo",
+    "storage_bucket": "hazy-flutter-fire-demo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:471447579009:android:a35a1647ff3f5f4ba3e080",
+        "android_client_info": {
+          "package_name": "com.example.flutter_firebase_demo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "471447579009-tukdjnp9k5c6fun3in1f3odfncja9i5k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIUM0EkG2PPfnHQ6i577tTZHJaW2OF298"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "471447579009-tukdjnp9k5c6fun3in1f3odfncja9i5k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "471447579009-kj163e97pcen8u5n4km4tbaedrbf5i7n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutterFirebaseDemo"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
