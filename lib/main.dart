@@ -39,22 +39,51 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  User? user;
+  User? _user;
+  int _index = 0;
 
   @override
   void initState() {
     super.initState();
-    FirebaseAuth.instance.authStateChanges().listen((user) => setState(() {
-          this.user = user;
-        }));
+    FirebaseAuth.instance
+        .authStateChanges()
+        .listen((user) => setState(() => _user = user));
   }
 
   @override
   Widget build(BuildContext context) {
-    if (user != null) {
-      return ProfilePage(user: user!);
-    } else {
+    if (_user == null) {
       return const SignInPage();
+    }
+
+    return Scaffold(
+      appBar: AppBar(title: const Text("Firebase Demo App")),
+      body: _buildScaffoldBody(),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle),
+            label: 'Profile',
+          ),
+        ],
+        onTap: (index) => setState(() => _index = index),
+        currentIndex: _index,
+      ),
+    );
+  }
+
+  Widget _buildScaffoldBody() {
+    switch (_index) {
+      case 0:
+        return const Text("Placeholder");
+      case 1:
+        return ProfilePage(user: _user!);
+      default:
+        throw const Text("Unexpected Error Occurred!");
     }
   }
 }
