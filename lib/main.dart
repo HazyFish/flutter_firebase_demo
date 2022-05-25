@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_firebase_demo/profile_page.dart';
+import 'package:flutter_firebase_demo/note_list.dart';
+import 'package:flutter_firebase_demo/profile.dart';
 import 'package:flutter_firebase_demo/sign_in_page.dart';
 import 'firebase_options.dart';
 
@@ -79,9 +80,9 @@ class _HomeState extends State<Home> {
   Widget _buildScaffoldBody() {
     switch (_index) {
       case 0:
-        return const Text("Placeholder");
+        return const NoteList();
       case 1:
-        return ProfilePage(user: _user!);
+        return Profile(user: _user!);
       default:
         throw const Text("Unexpected Error Occurred!");
     }
