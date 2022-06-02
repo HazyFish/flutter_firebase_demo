@@ -1,30 +1,21 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_firebase_demo/note_creator_page.dart';
 
 import 'models/note.dart';
 
-class NoteList extends StatefulWidget {
-  const NoteList({Key? key}) : super(key: key);
-
-  @override
-  State<NoteList> createState() => _NoteListState();
-}
-
-class _NoteListState extends State<NoteList> {
-  final List<Note> _notes = [
-    Note("Hello", "My first note"),
-    Note("Hello Again", "Another note"),
-  ];
+class NoteListPage extends StatelessWidget {
+  final OnCreateNoteCallback onCreateNote;
+  final List<Note> notes;
+  const NoteListPage(
+      {Key? key, required this.notes, required this.onCreateNote})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView.builder(
-        itemCount: _notes.length,
-        itemBuilder: (context, i) => _buildListItem(_notes[i]),
+        itemCount: notes.length,
+        itemBuilder: (context, i) => _buildListItem(notes[i]),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
@@ -32,7 +23,7 @@ class _NoteListState extends State<NoteList> {
           context,
           MaterialPageRoute(
             builder: (context) => NoteCreatorPage(
-              onCreateNote: (note) => setState(() => _notes.add(note)),
+              onCreateNote: onCreateNote,
             ),
           ),
         ),

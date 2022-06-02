@@ -1,10 +1,14 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_firebase_demo/note_list.dart';
+import 'package:flutter_firebase_demo/note_list_page.dart';
 import 'package:flutter_firebase_demo/profile.dart';
 import 'package:flutter_firebase_demo/sign_in_page.dart';
 import 'firebase_options.dart';
+import 'models/note.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,13 +46,33 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   User? _user;
   int _index = 0;
+  final List<Note> _notes = [];
 
   @override
   void initState() {
     super.initState();
-    FirebaseAuth.instance
-        .authStateChanges()
-        .listen((user) => setState(() => _user = user));
+    FirebaseAuth.instance.authStateChanges().listen((user) => setState(() {
+          _user = user;
+          if (user == null) {
+            _notes.clear();
+          } else {
+            getNotesFromFirestore();
+          }
+        }));
+  }
+
+  void getNotesFromFirestore() {
+    FirebaseFirestore.instance.collection("notes").get().then((qs) => setState(
+        () => _notes.addAll(qs.docs
+            .map((e) => e.data())
+            .map((e) => Note(e['title'], e['content'])))));
+  }
+
+  void addNoteToFirestore(Note note) {
+    FirebaseFirestore.instance.collection("notes").add({
+      "title": note.title,
+      "content": note.content,
+    }).then((value) => log("Document ${value.path} added to Firestore"));
   }
 
   @override
@@ -80,7 +104,13 @@ class _HomeState extends State<Home> {
   Widget _buildScaffoldBody() {
     switch (_index) {
       case 0:
-        return const NoteList();
+        return NoteListPage(
+          notes: _notes,
+          onCreateNote: (note) => setState(() {
+            _notes.add(note);
+            addNoteToFirestore(note);
+          }),
+        );
       case 1:
         return Profile(user: _user!);
       default:
